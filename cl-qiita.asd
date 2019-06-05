@@ -4,8 +4,8 @@
 
 (defsystem "cl-qiita"
     :version "0.1.0"
-    :author ""
-    :license ""
+    :author "takeokunn"
+    :license "GPLv3"
     :depends-on (:dexador :cl-json :quri)
     :components ((:module "src"
                      :components
