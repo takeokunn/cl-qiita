@@ -3,6 +3,7 @@
     (:export :http-get
         :http-post
         :http-put
+        :http-patch
         :http-delete))
 (in-package :cl-qiita.base)
 
@@ -36,6 +37,11 @@
 (defun http-put (&key path (token ""))
     (base-response (dex:put (generate-url path)
                        :headers (generate-header token))))
+
+(defun http-patch (&key path content (token ""))
+    (base-response (dex:patch (generate-url path)
+                       :headers (generate-header token)
+                       :content content)))
 
 (defun http-delete (&key path (token ""))
     (base-response (dex:delete (generate-url path)

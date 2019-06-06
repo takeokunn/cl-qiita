@@ -4,6 +4,7 @@
         :http-get
         :http-post
         :http-put
+        :http-patch
         :http-delete)
     (:export
         ;; likes
@@ -26,7 +27,15 @@
         ;; item
         :get-authenticated-user-items
         :get-items
-        :post-item))
+        :post-item
+        :delete-item
+        :show-item
+        :patch-item
+        :put-item-stock
+        :get-tag-items
+        :get-user-stocks
+        ;; authentication
+        :get-authenticated-user))
 (in-package :cl-qiita)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -115,3 +124,40 @@
         (http-post :path "/api/v2/items"
             :content content
             :token token)))
+
+(defun delete-item (&key token item_id)
+    (http-delete :path (concatenate 'string "/api/v2/items/" item_id)
+        :token token))
+
+(defun show-item (&key item_id)
+    (http-get :path (concatenate 'string "/api/v2/items/" item_id)))
+
+(defun patch-item (&key token item_id title body private name (versions '("1.0")))
+    (let ((content (json:encode-json-to-string `((:title . ,title)
+                                                    (:body . ,body)
+                                                    (:private . ,private)
+                                                    (:tags . (((:name . ,name) (:versions . ,versions))))))))
+        (http-patch :path (concatenate 'string "/api/v2/items/" item_id)
+            :content content
+            :token token)))
+
+(defun put-item-stock (&key token item_id)
+    (http-put :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+        :token token))
+
+(defun get-tag-items (&key tag_id (page 1) (per_page 20))
+    (http-get :path (concatenate 'string "/api/v2/tags/" tag_id "/items")
+        :query `(("page" . ,page) ("per_page" . ,per_page))))
+
+(defun get-user-stocks (&key user_id (page 1) (per_page 20))
+    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/stocks")
+        :query `(("page" . ,page) ("per_page" . ,per_page))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    authentication      ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun get-authenticated-user (&key token)
+    (http-get :path "/api/v2/authenticated_user"
+        :token token))
