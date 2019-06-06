@@ -1,9 +1,18 @@
 (defpackage cl-qiita.base
     (:use :cl)
-    (:export :http-get))
-(in-package :cl-qiita)
+    (:export :http-get
+        :http-post
+        :http-put
+        :http-delete))
+(in-package :cl-qiita.base)
 
 (defvar *URL* "https://qiita.com")
+
+(defmacro generate-header (token)
+    `(let ((content-type (cons "Content-Type" "application/json")))
+        (cond ((eq ,token "") (list content-type))
+            (t (list content-type
+                   (cons "Authorization" (concatenate 'string "Bearer " ,token)))))))
 
 (defmacro generate-url (path &optional query)
     `(quri:make-uri
@@ -11,14 +20,23 @@
          :path ,path
          :query ,query))
 
-(defmacro base-client (&body body)
+(defmacro base-response (&body body)
     `(multiple-value-bind (response status) ,@body
          (values response status)))
 
-(defun http-get (&key path)
-    (base-client (dex:get (generate-url path)
-                     :headers '(("Content-Type" . "application/json")))))
+(defun http-get (&key path query (token ""))
+    (base-response (dex:get (generate-url path query)
+                       :headers (generate-header token))))
 
-;; (defun http-post (&key path content (token nil))
-;;     (base-client (dex:post (generate-url path)q
-;;                      :content content)))
+(defun http-post (&key path content (token ""))
+    (base-response (dex:post (generate-url path)
+                       :headers (generate-header token)
+                       :content content)))
+
+(defun http-put (&key path (token ""))
+    (base-response (dex:put (generate-url path)
+                       :headers (generate-header token))))
+
+(defun http-delete (&key path (token ""))
+    (base-response (dex:delete (generate-url path)
+                       :headers (generate-header token))))
