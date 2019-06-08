@@ -9,6 +9,12 @@
     (:export
         ;; likes
         :get-likes
+        ;; comments
+        :delete-comment
+        :show-comment
+        :patch-comment
+        :get-item-comments
+        :post-item-comment
         ;; tags
         :get-tags
         :show-tag
@@ -20,6 +26,7 @@
         :get-item-stockers
         :get-users
         :show-user
+        :show-user-followees
         :show-user-followers
         :delete-user-following
         :get-user-following
@@ -51,25 +58,37 @@
 ;;        comment         ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun delete-comment ()
+(defun delete-comment (&key comment_id token)
     "url: https://qiita.com/api/v2/docs#delete-apiv2commentscomment_id"
-    ())
+    (declare (type string comment_id token))
+    (http-delete :path (concatenate 'string "/api/v2/comments/" comment_id)
+        :token token))
 
-(defun show-comment ()
+(defun show-comment (&key comment_id)
     "url: https://qiita.com/api/v2/docs#get-apiv2commentscomment_id"
-    ())
+    (declare (type string comment_id))
+    (http-get :path (concatenate 'string "/api/v2/comments/" comment_id)))
 
-(defun patch-comment ()
+(defun patch-comment (&key comment_id body token)
     "url: https://qiita.com/api/v2/docs#patch-apiv2commentscomment_id"
-    ())
+    (declare (type string comment_id body token))
+    (let ((content (json:encode-json-to-string `((:body . ,body)))))
+        (http-patch :path (concatenate 'string "/api/v2/comments/" comment_id)
+            :content content
+            :token token)))
 
-(defun get-item-comments ()
+(defun get-item-comments (&key item_id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idcomments"
-    ())
+    (declare (type string item_id))
+    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/comments")))
 
-(defun post-item-comment ()
+(defun post-item-comment (&key item_id body token)
     "url: https://qiita.com/api/v2/docs#post-apiv2itemsitem_idcomments"
-    ())
+    (declare (type string item_id))
+    (let ((content (json:encode-json-to-string `((:body . ,body)))))
+        (http-post :path (concatenate 'string "/api/v2/items/" item_id "/comments")
+            :content content
+            :token token)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         tags           ;;
@@ -249,7 +268,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun get-authenticated-user (&key token)
-    "url: "
+    "url: https://qiita.com/api/v2/docs#get-apiv2authenticated_user"
     (declare (type string token))
     (http-get :path "/api/v2/authenticated_user"
         :token token))
