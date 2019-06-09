@@ -11,7 +11,7 @@
                      :components
                      ((:file "cl-qiita" :depends-on ("base"))
                          (:file "base"))))
-    :description ""
+    :description "qiita api client"
     :long-description
     #.(read-file-string
           (subpathname *load-pathname* "README.markdown"))
