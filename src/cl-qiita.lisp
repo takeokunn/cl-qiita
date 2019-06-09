@@ -53,44 +53,44 @@
 ;;        likes           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-likes (&key item_id)
+(defun get-likes (&key item-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idlikes"
-    (declare (type string item_id))
-    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/likes")))
+    (declare (type string item-id))
+    (http-get :path (concatenate 'string "/api/v2/items/" item-id "/likes")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;        comment         ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun delete-comment (&key comment_id token)
+(defun delete-comment (&key comment-id token)
     "url: https://qiita.com/api/v2/docs#delete-apiv2commentscomment_id"
-    (declare (type string comment_id token))
-    (http-delete :path (concatenate 'string "/api/v2/comments/" comment_id)
+    (declare (type string comment-id token))
+    (http-delete :path (concatenate 'string "/api/v2/comments/" comment-id)
         :token token))
 
-(defun show-comment (&key comment_id)
+(defun show-comment (&key comment-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2commentscomment_id"
-    (declare (type string comment_id))
-    (http-get :path (concatenate 'string "/api/v2/comments/" comment_id)))
+    (declare (type string comment-id))
+    (http-get :path (concatenate 'string "/api/v2/comments/" comment-id)))
 
-(defun patch-comment (&key comment_id body token)
+(defun patch-comment (&key comment-id body token)
     "url: https://qiita.com/api/v2/docs#patch-apiv2commentscomment_id"
-    (declare (type string comment_id body token))
+    (declare (type string comment-id body token))
     (let ((content (json:encode-json-to-string `((:body . ,body)))))
-        (http-patch :path (concatenate 'string "/api/v2/comments/" comment_id)
+        (http-patch :path (concatenate 'string "/api/v2/comments/" comment-id)
             :content content
             :token token)))
 
-(defun get-item-comments (&key item_id)
+(defun get-item-comments (&key item-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idcomments"
-    (declare (type string item_id))
-    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/comments")))
+    (declare (type string item-id))
+    (http-get :path (concatenate 'string "/api/v2/items/" item-id "/comments")))
 
-(defun post-item-comment (&key item_id body token)
+(defun post-item-comment (&key item-id body token)
     "url: https://qiita.com/api/v2/docs#post-apiv2itemsitem_idcomments"
-    (declare (type string item_id))
+    (declare (type string item-id))
     (let ((content (json:encode-json-to-string `((:body . ,body)))))
-        (http-post :path (concatenate 'string "/api/v2/items/" item_id "/comments")
+        (http-post :path (concatenate 'string "/api/v2/items/" item-id "/comments")
             :content content
             :token token)))
 
@@ -98,108 +98,108 @@
 ;;         tags           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-tags (&key (page 1) (per_page 20) (sort "count"))
+(defun get-tags (&key (page 1) (per-page 20) (sort "count"))
     "url: https://qiita.com/api/v2/docs#get-apiv2tags"
-    (declare (type fixnum page per_page) (type string sort))
+    (declare (type fixnum page per-page) (type string sort))
     (http-get :path "/api/v2/tags"
-        :query `(("page" . ,page) ("per_page" . ,per_page) ("sort" . ,sort))))
+        :query `(("page" . ,page) ("per_page" . ,per-page) ("sort" . ,sort))))
 
-(defun show-tag (&key tag_id)
+(defun show-tag (&key tag-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2tagstag_id"
-    (declare (type string tag_id))
-    (http-get :path (concatenate 'string "/api/v2/tags/" tag_id)))
+    (declare (type string tag-id))
+    (http-get :path (concatenate 'string "/api/v2/tags/" tag-id)))
 
-(defun show-user-following-tags (&key user_id (page 1) (per_page 20))
+(defun show-user-following-tags (&key user-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_idfollowing_tags"
-    (declare (type string user_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/following_tags")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string user-id) (type fixnum page per-page))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id "/following_tags")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun delete-tag-following (&key tag_id token)
+(defun delete-tag-following (&key tag-id token)
     "url: https://qiita.com/api/v2/docs#delete-apiv2tagstag_idfollowing"
-    (declare (type string tag_id token))
-    (http-delete :path (concatenate 'string "/api/v2/tags/" tag_id "/following")
+    (declare (type string tag-id token))
+    (http-delete :path (concatenate 'string "/api/v2/tags/" tag-id "/following")
         :token token))
 
-(defun get-tag-following (&key tag_id token)
+(defun get-tag-following (&key tag-id token)
     "url: https://qiita.com/api/v2/docs#get-apiv2tagstag_idfollowing"
-    (declare (type string tag_id token))
-    (http-get :path (concatenate 'string "/api/v2/tags/" tag_id "/following")
+    (declare (type string tag-id token))
+    (http-get :path (concatenate 'string "/api/v2/tags/" tag-id "/following")
         :token token))
 
-(defun put-tag-following (&key tag_id token)
+(defun put-tag-following (&key tag-id token)
     "url: https://qiita.com/api/v2/docs#put-apiv2tagstag_idfollowing"
-    (declare (type string tag_id token))
-    (http-put :path (concatenate 'string "/api/v2/tags/" tag_id "/following")
+    (declare (type string tag-id token))
+    (http-put :path (concatenate 'string "/api/v2/tags/" tag-id "/following")
         :token token))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         user           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-item-stockers (&key item_id (page 1) (per_page 20))
+(defun get-item-stockers (&key item-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idstockers"
-    (declare (type string item_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/stockers")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string item-id) (type fixnum page per-page))
+    (http-get :path (concatenate 'string "/api/v2/items/" item-id "/stockers")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun get-users (&key (page 1) (per_page 20))
+(defun get-users (&key (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2users"
-    (declare (type fixnum page per_page))
+    (declare (type fixnum page per-page))
     (http-get :path (concatenate 'string "/api/v2/users")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun show-user (&key user_id)
+(defun show-user (&key user-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_id"
-    (declare (type string user_id))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id)))
+    (declare (type string user-id))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id)))
 
-(defun show-user-followees (&key user_id (page 1) (per_page 20))
+(defun show-user-followees (&key user-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_idfollowees"
-    (declare (type string user_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/followees")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string user-id) (type fixnum page per_page))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id "/followees")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun show-user-followers (&key user_id (page 1) (per_page 20))
+(defun show-user-followers (&key user-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_idfollowers"
-    (declare (type string user_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/followers")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string user-id) (type fixnum page per-page))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id "/followers")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun delete-user-following (&key user_id token)
+(defun delete-user-following (&key user-id token)
     "url: https://qiita.com/api/v2/docs#delete-apiv2usersuser_idfollowing"
-    (declare (type string user_id token))
-    (http-delete :path (concatenate 'string "/api/v2/users/" user_id "/following")
+    (declare (type string user-id token))
+    (http-delete :path (concatenate 'string "/api/v2/users/" user-id "/following")
         :token token))
 
-(defun get-user-following (&key user_id token)
+(defun get-user-following (&key user-id token)
     "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_idfollowing"
-    (declare (type string user_id token))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/following")
+    (declare (type string user-id token))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id "/following")
         :token token))
 
-(defun put-user-following (&key user_id token)
+(defun put-user-following (&key user-id token)
     "url: https://qiita.com/api/v2/docs#put-apiv2usersuser_idfollowing"
-    (declare (type string user_id token))
-    (http-put :path (concatenate 'string "/api/v2/users/" user_id "/following")
+    (declare (type string user-id token))
+    (http-put :path (concatenate 'string "/api/v2/users/" user-id "/following")
         :token token))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;        items           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-authenticated-user-items (&key token (page 1) (per_page 20))
+(defun get-authenticated-user-items (&key token (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2authenticated_useritems"
-    (declare (type string token) (type fixnum page per_page))
+    (declare (type string token) (type fixnum page per-page))
     (http-get :path "/api/v2/authenticated_user/items"
-        :query `(("page" . ,page) ("per_page" . ,per_page))
+        :query `(("page" . ,page) ("per_page" . ,per-page))
         :token token))
 
-(defun get-items (&key (page 1) (per_page 20) (query ""))
+(defun get-items (&key (page 1) (per-page 20) (query ""))
     "url: https://qiita.com/api/v2/docs#get-apiv2items"
-    (declare (type fixnum page per_page) (type string query))
+    (declare (type fixnum page per-page) (type string query))
     (http-get :path "/api/v2/items"
-        :query `(("page" . ,page) ("per_page" . ,per_page) ("query" . ,query))))
+        :query `(("page" . ,page) ("per_page" . ,per-page) ("query" . ,query))))
 
 
 (defun post-item (&key token title body private name (versions '("1.0")))
@@ -212,61 +212,61 @@
             :content content
             :token token)))
 
-(defun delete-item (&key token item_id)
+(defun delete-item (&key token item-id)
     "url: https://qiita.com/api/v2/docs#delete-apiv2itemsitem_id"
-    (declare (type string token item_id))
-    (http-delete :path (concatenate 'string "/api/v2/items/" item_id)
+    (declare (type string token item-id))
+    (http-delete :path (concatenate 'string "/api/v2/items/" item-id)
         :token token))
 
-(defun show-item (&key item_id)
+(defun show-item (&key item-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_id"
-    (declare (type string item_id))
-    (http-get :path (concatenate 'string "/api/v2/items/" item_id)))
+    (declare (type string item-id))
+    (http-get :path (concatenate 'string "/api/v2/items/" item-id)))
 
-(defun patch-item (&key token item_id title body private name (versions '("1.0")))
+(defun patch-item (&key token item-id title body private name (versions '("1.0")))
     "url: https://qiita.com/api/v2/docs#patch-apiv2itemsitem_id"
     (let ((content (json:encode-json-to-string `((:title . ,title)
                                                     (:body . ,body)
                                                     (:private . ,private)
                                                     (:tags . (((:name . ,name) (:versions . ,versions))))))))
-        (http-patch :path (concatenate 'string "/api/v2/items/" item_id)
+        (http-patch :path (concatenate 'string "/api/v2/items/" item-id)
             :content content
             :token token)))
 
-(defun put-item-stock (&key token item_id)
+(defun put-item-stock (&key token item-id)
     "url: https://qiita.com/api/v2/docs#put-apiv2itemsitem_idstock"
-    (declare (type string token item_id))
-    (http-put :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+    (declare (type string token item-id))
+    (http-put :path (concatenate 'string "/api/v2/items/" item-id "/stock")
         :token token))
 
-(defun put-user-stock (&key token item_id)
+(defun put-user-stock (&key token item-id)
     "url: https://qiita.com/api/v2/docs#put-apiv2itemsitem_idstock"
-    (declare (type string token item_id))
-    (http-put :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+    (declare (type string token item-id))
+    (http-put :path (concatenate 'string "/api/v2/items/" item-id "/stock")
         :token token))
 
-(defun delete-user-stock (&key token item_id)
+(defun delete-user-stock (&key token item-id)
     "url: https://qiita.com/api/v2/docs#delete-apiv2itemsitem_idstock"
-    (declare (type string token item_id))
-    (http-delete :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+    (declare (type string token item-id))
+    (http-delete :path (concatenate 'string "/api/v2/items/" item-id "/stock")
         :token token))
 
-(defun show-item-stock (&key token item_id)
+(defun show-item-stock (&key token item-id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idstock"
-    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+    (http-get :path (concatenate 'string "/api/v2/items/" item-id "/stock")
         :token token))
 
-(defun get-user-stocks (&key user_id (page 1) (per_page 20))
+(defun get-user-stocks (&key user-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idstock"
-    (declare (type string user_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/users/" user_id "/stocks")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string user_id) (type fixnum page per-page))
+    (http-get :path (concatenate 'string "/api/v2/users/" user-id "/stocks")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
-(defun get-tag-items (&key tag_id (page 1) (per_page 20))
+(defun get-tag-items (&key tag-id (page 1) (per-page 20))
     "url: https://qiita.com/api/v2/docs#delete-apiv2itemsitem_idstock"
-    (declare (type string tag_id) (type fixnum page per_page))
-    (http-get :path (concatenate 'string "/api/v2/tags/" tag_id "/items")
-        :query `(("page" . ,page) ("per_page" . ,per_page))))
+    (declare (type string tag-id) (type fixnum page per-page))
+    (http-get :path (concatenate 'string "/api/v2/tags/" tag-id "/items")
+        :query `(("page" . ,page) ("per_page" . ,per-page))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    authentication      ;;
