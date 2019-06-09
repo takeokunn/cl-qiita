@@ -39,6 +39,10 @@
         :show-item
         :patch-item
         :put-item-stock
+        :put-user-stock
+        :delete-user-stock
+        :show-item-stock
+        :get-user-items
         :get-tag-items
         :get-user-stocks
         ;; authentication
@@ -235,21 +239,22 @@
     (http-put :path (concatenate 'string "/api/v2/items/" item_id "/stock")
         :token token))
 
-(defun put-user-stock ()
+(defun put-user-stock (&key token item_id)
     "url: https://qiita.com/api/v2/docs#put-apiv2itemsitem_idstock"
-    ())
+    (declare (type string token item_id))
+    (http-put :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+        :token token))
 
-(defun delete-user-stock ()
+(defun delete-user-stock (&key token item_id)
     "url: https://qiita.com/api/v2/docs#delete-apiv2itemsitem_idstock"
-    ())
+    (declare (type string token item_id))
+    (http-delete :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+        :token token))
 
-(defun show-item-stock ()
+(defun show-item-stock (&key token item_id)
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idstock"
-    ())
-
-(defun get-user-items ()
-    "url: https://qiita.com/api/v2/docs#get-apiv2usersuser_iditems"
-    ())
+    (http-get :path (concatenate 'string "/api/v2/items/" item_id "/stock")
+        :token token))
 
 (defun get-user-stocks (&key user_id (page 1) (per_page 20))
     "url: https://qiita.com/api/v2/docs#get-apiv2itemsitem_idstock"
